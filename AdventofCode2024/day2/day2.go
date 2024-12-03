@@ -1,7 +1,6 @@
 package day2
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -19,46 +18,38 @@ func reportCheck(report []int) bool {
 			} else {
 				changeType--
 			}
-			if changeType != i && changeType != (0-i) {
-
+			if changeType != i && changeType != (0-i) { //check jump direction
 				return false
 			}
-
 		} else {
-
 			return false
 		}
 	}
-
 	return true
 }
 
+func lineCopy(report []int) []int {
+	//returns a copy of the report
+	line := make([]int, len(report))
+	count := copy(line, report)
+	if count == 0 {
+		panic(count)
+	}
+	return line
+}
+
+func lineCopyDouble(report []int, i int) ([]int, []int) {
+	//Creates two copies of the report
+	//Var1 = removed level left of i
+	//Var2 = removed lever right of i
+	Var1 := lineCopy(report)
+	Var2 := lineCopy(report)
+	reportVar1 := append(Var1[:(i-1)], Var1[i:]...)
+	reportVar2 := append(Var2[:i], Var2[(i+1):]...)
+	return reportVar1, reportVar2
+}
+
 func dampedReportCheck(report []int) bool {
-	/*
-		if reportCheck(report) {
-
-			return true
-		} else {
-
-			for i := range report {
-
-				reportTemp := make([]int, len(report))
-				count := copy(reportTemp, report)
-				if count == 0 {
-					panic(count)
-				}
-				reportVariation := append(reportTemp[:i], reportTemp[(i+1):]...)
-
-				if reportCheck(reportVariation) {
-
-					return true
-				} else {
-
-				}
-			}
-		}
-		return false
-	*/
 	//Non brute-force solution
 	changeType := 0
 	for i := 1; i < len(report); i++ {
@@ -69,42 +60,21 @@ func dampedReportCheck(report []int) bool {
 			} else {
 				changeType--
 			}
-			if changeType != i && changeType != (0-i) {
-				//fmt.Println("Fail changetype ")
+			if changeType != i && changeType != (0-i) { //check jump direction
+
 				if i == 2 {
-					reportTemp := make([]int, len(report))
-					count := copy(reportTemp, report)
-					if count == 0 {
-						panic(count)
-					}
+					reportTemp := lineCopy(report)
 					dvar := reportTemp[1:]
 					if reportCheck(dvar) {
-						//fmt.Println(dvar)
-						//fmt.Println("Safe")
 						return true
 					}
-
 				}
-				reportTemp := make([]int, len(report))
-				count := copy(reportTemp, report)
-				if count == 0 {
-					panic(count)
-				}
-				dvar := append(reportTemp[:(i-1)], reportTemp[i:]...)
+				dvar, dvar2 := lineCopyDouble(report, i)
 				if reportCheck(dvar) {
-					//fmt.Println(dvar)
-					//fmt.Println("Safe")
 					return true
 				}
-				reportTemp2 := make([]int, len(report))
-				count2 := copy(reportTemp2, report)
-				if count2 == 0 {
-					panic(count2)
-				}
-				dvar2 := append(reportTemp2[:(i)], reportTemp2[(i+1):]...)
+
 				if reportCheck(dvar2) {
-					//fmt.Println(dvar)
-					//fmt.Println("Safe")
 					return true
 				}
 
@@ -112,46 +82,52 @@ func dampedReportCheck(report []int) bool {
 			}
 
 		} else {
-			//fmt.Println("Fail change size")
-			reportTemp := make([]int, len(report))
-			count := copy(reportTemp, report)
-			if count == 0 {
-				panic(count)
-			}
 
-			dvar := append(reportTemp[:(i-1)], reportTemp[i:]...)
+			dvar, dvar2 := lineCopyDouble(report, i)
 			if reportCheck(dvar) {
-				//fmt.Println(dvar)
-				//fmt.Println("Safe")
 				return true
 			}
-
-			reportTemp2 := make([]int, len(report))
-			count2 := copy(reportTemp2, report)
-			if count2 == 0 {
-				panic(count2)
-			}
-			dvar2 := append(reportTemp2[:(i)], reportTemp2[(i+1):]...)
 			if reportCheck(dvar2) {
-				//fmt.Println(dvar)
-				//fmt.Println("Safe")
 				return true
 			}
-
 			return false
 		}
 	}
-	//fmt.Println("Safe")
 	return true
-
 }
 
-func Part12() {
+func Part1() (time.Duration, time.Duration, int) {
 	Startfile := time.Now()
-	var input = fileparse.FileParse("day2/Input.txt")
+	var input = fileparse.FileParse("day2/TestInput.txt")
 	fileparsetime := time.Since(Startfile)
 	P1Start := time.Now()
 	safeCount := 0
+	var lineFormated []string
+
+	for i := range input {
+		var lineCon []int
+		lineFormated = strings.Split(input[i], " ")
+		for j := range lineFormated {
+			num, err := strconv.Atoi(lineFormated[j])
+			if err != nil {
+				panic(err)
+			}
+			lineCon = append(lineCon, num)
+		}
+		if reportCheck(lineCon) {
+			safeCount++
+		}
+	}
+	P1Time := time.Since(P1Start)
+	return fileparsetime, P1Time, safeCount
+
+}
+
+func Part2() (time.Duration, time.Duration, int) {
+	Startfile := time.Now()
+	var input = fileparse.FileParse("day2/Input.txt")
+	fileparsetime := time.Since(Startfile)
+	P2Start := time.Now()
 	dampedSafeCount := 0
 	var lineFormated []string
 
@@ -165,21 +141,10 @@ func Part12() {
 			}
 			lineCon = append(lineCon, num)
 		}
-
-		if reportCheck(lineCon) {
-			safeCount++
-		}
-
 		if dampedReportCheck(lineCon) {
 			dampedSafeCount++
 		}
-
 	}
-	P1Time := time.Since(P1Start)
-
-	fmt.Printf("Parse Time: %v\n", fileparsetime)
-	fmt.Printf("Part 1+2 Time: %v\n", P1Time)
-	fmt.Printf("Part 1 Safety Count: %d\n", safeCount)
-	fmt.Printf("Part 2 Safety Count: %d\n", dampedSafeCount)
-
+	P2Time := time.Since(P2Start)
+	return fileparsetime, P2Time, dampedSafeCount
 }
