@@ -34,32 +34,32 @@ func reportCheck(report []int) bool {
 }
 
 func dampedReportCheck(report []int) bool {
+	/*
+		if reportCheck(report) {
 
-	if reportCheck(report) {
+			return true
+		} else {
 
-		return true
-	} else {
+			for i := range report {
 
-		for i := range report {
+				reportTemp := make([]int, len(report))
+				count := copy(reportTemp, report)
+				if count == 0 {
+					panic(count)
+				}
+				reportVariation := append(reportTemp[:i], reportTemp[(i+1):]...)
 
-			reportTemp := make([]int, len(report))
-			count := copy(reportTemp, report)
-			if count == 0 {
-				panic(count)
-			}
-			reportVariation := append(reportTemp[:i], reportTemp[(i+1):]...)
+				if reportCheck(reportVariation) {
 
-			if reportCheck(reportVariation) {
+					return true
+				} else {
 
-				return true
-			} else {
-
+				}
 			}
 		}
-	}
-	return false
-
-	/*                             //come back later for smart solution
+		return false
+	*/
+	//Non brute-force solution
 	changeType := 0
 	for i := 1; i < len(report); i++ {
 		diff := report[i] - report[i-1]
@@ -72,7 +72,12 @@ func dampedReportCheck(report []int) bool {
 			if changeType != i && changeType != (0-i) {
 				//fmt.Println("Fail changetype ")
 				if i == 2 {
-					dvar := report[1:]
+					reportTemp := make([]int, len(report))
+					count := copy(reportTemp, report)
+					if count == 0 {
+						panic(count)
+					}
+					dvar := reportTemp[1:]
 					if reportCheck(dvar) {
 						//fmt.Println(dvar)
 						//fmt.Println("Safe")
@@ -80,13 +85,23 @@ func dampedReportCheck(report []int) bool {
 					}
 
 				}
-				dvar := append(report[:(i-1)], report[i:]...)
+				reportTemp := make([]int, len(report))
+				count := copy(reportTemp, report)
+				if count == 0 {
+					panic(count)
+				}
+				dvar := append(reportTemp[:(i-1)], reportTemp[i:]...)
 				if reportCheck(dvar) {
 					//fmt.Println(dvar)
 					//fmt.Println("Safe")
 					return true
 				}
-				dvar2 := append(report[:(i)], report[(i+1):]...)
+				reportTemp2 := make([]int, len(report))
+				count2 := copy(reportTemp2, report)
+				if count2 == 0 {
+					panic(count2)
+				}
+				dvar2 := append(reportTemp2[:(i)], reportTemp2[(i+1):]...)
 				if reportCheck(dvar2) {
 					//fmt.Println(dvar)
 					//fmt.Println("Safe")
@@ -98,13 +113,25 @@ func dampedReportCheck(report []int) bool {
 
 		} else {
 			//fmt.Println("Fail change size")
-			dvar := append(report[:(i-1)], report[i:]...)
+			reportTemp := make([]int, len(report))
+			count := copy(reportTemp, report)
+			if count == 0 {
+				panic(count)
+			}
+
+			dvar := append(reportTemp[:(i-1)], reportTemp[i:]...)
 			if reportCheck(dvar) {
 				//fmt.Println(dvar)
 				//fmt.Println("Safe")
 				return true
 			}
-			dvar2 := append(report[:(i)], report[(i+1):]...)
+
+			reportTemp2 := make([]int, len(report))
+			count2 := copy(reportTemp2, report)
+			if count2 == 0 {
+				panic(count2)
+			}
+			dvar2 := append(reportTemp2[:(i)], reportTemp2[(i+1):]...)
 			if reportCheck(dvar2) {
 				//fmt.Println(dvar)
 				//fmt.Println("Safe")
@@ -116,7 +143,7 @@ func dampedReportCheck(report []int) bool {
 	}
 	//fmt.Println("Safe")
 	return true
-	*/
+
 }
 
 func Part12() {
