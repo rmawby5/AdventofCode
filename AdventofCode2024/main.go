@@ -3,12 +3,13 @@ package main
 import (
 	"fmt"
 
-	"Aoc.com/AdventOfCode2024/day2"
+	"Aoc.com/AdventOfCode2024/day3"
 )
 
 func main() {
-	Ftime, Ptime, count := day2.Part1()
-	fmt.Println(Ftime)
-	fmt.Println(Ptime)
-	fmt.Println(count)
+	ParseTime, P1Time, Total := day3.Part1()
+	fmt.Printf("Parse Time: %v ", ParseTime)
+	fmt.Printf("Part 1 Time: %v ", P1Time)
+	fmt.Printf("Part 1 Total: %d ", Total)
+
 }
