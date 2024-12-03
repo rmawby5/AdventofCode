@@ -13,10 +13,8 @@ func getInput(Path string) string {
 	input := fileparse.FileParse(Path)
 	var fullStr string
 	for i := range input {
-		//fmt.Println(input[i])
 		fullStr = fullStr + input[i]
 	}
-
 	return fullStr
 }
 
@@ -27,9 +25,7 @@ func multiple(mul string) int {
 	if err1 != nil || err2 != nil {
 		panic("Error on int conversion")
 	}
-	//return num1*num2
 	return num1 * num2
-
 }
 
 func Part1() (time.Duration, time.Duration, int) {
@@ -37,15 +33,41 @@ func Part1() (time.Duration, time.Duration, int) {
 	stg := getInput("day3/Input.txt")
 	ParseTime := time.Since(ParseStart)
 	P1Start := time.Now()
-	//fmt.Println(stg)
+
 	pattn := regexp.MustCompile(`mul\(\d+,\d+\)`)
 	StgMatch := pattn.FindAllString(stg, -1)
-	//fmt.Println(StgMatch)
+
 	Total := 0
 	for i := range StgMatch {
 		Total += multiple(StgMatch[i])
 	}
 	P1Time := time.Since(P1Start)
 	return ParseTime, P1Time, Total
+}
 
+func Part2() (time.Duration, time.Duration, int) {
+	ParseStart := time.Now()
+	stg := getInput("day3/Input.txt")
+	ParseTime := time.Since(ParseStart)
+	P2Start := time.Now()
+
+	pattn := regexp.MustCompile(`don\'t\(\)|do\(\)|mul\(\d+,\d+\)`)
+	StgMatch := pattn.FindAllString(stg, -1)
+
+	includeMul := true
+	adjustedTotal := 0
+	for i := range StgMatch {
+		if StgMatch[i] == "don't()" {
+			includeMul = false
+		}
+		if StgMatch[i] == "do()" {
+			includeMul = true
+		} else {
+			if includeMul {
+				adjustedTotal += multiple(StgMatch[i])
+			}
+		}
+	}
+	P2Time := time.Since(P2Start)
+	return ParseTime, P2Time, adjustedTotal
 }
