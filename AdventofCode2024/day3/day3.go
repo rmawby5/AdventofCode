@@ -33,13 +33,11 @@ func Part1() (time.Duration, time.Duration, int) {
 	stg := getInput("day3/Input.txt")
 	ParseTime := time.Since(ParseStart)
 	P1Start := time.Now()
+	Total := 0
 
 	pattn := regexp.MustCompile(`mul\(\d+,\d+\)`)
-	StgMatch := pattn.FindAllString(stg, -1)
-
-	Total := 0
-	for i := range StgMatch {
-		Total += multiple(StgMatch[i])
+	for _, i := range pattn.FindAllString(stg, -1) {
+		Total += multiple(i)
 	}
 	P1Time := time.Since(P1Start)
 	return ParseTime, P1Time, Total
@@ -50,21 +48,21 @@ func Part2() (time.Duration, time.Duration, int) {
 	stg := getInput("day3/Input.txt")
 	ParseTime := time.Since(ParseStart)
 	P2Start := time.Now()
-
-	pattn := regexp.MustCompile(`don\'t\(\)|do\(\)|mul\(\d+,\d+\)`)
-	StgMatch := pattn.FindAllString(stg, -1)
-
 	includeMul := true
 	adjustedTotal := 0
-	for i := range StgMatch {
-		if StgMatch[i] == "don't()" {
+
+	pattn := regexp.MustCompile(`don\'t\(\)|do\(\)|mul\(\d+,\d+\)`)
+	//StgMatch := pattn.FindAllString(stg, -1)
+
+	for _, i := range pattn.FindAllString(stg, -1) {
+		if i == "don't()" {
 			includeMul = false
 		}
-		if StgMatch[i] == "do()" {
+		if i == "do()" {
 			includeMul = true
 		} else {
 			if includeMul {
-				adjustedTotal += multiple(StgMatch[i])
+				adjustedTotal += multiple(i)
 			}
 		}
 	}
