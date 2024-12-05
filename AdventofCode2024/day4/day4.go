@@ -83,7 +83,6 @@ func Part1() (time.Duration, time.Duration, int) {
 		for colIdx, col := range row {
 			if col == "X" {
 				wordCount += checkWord(crossWord, rowIdx, colIdx)
-
 			}
 		}
 	}
