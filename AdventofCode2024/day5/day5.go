@@ -1,9 +1,10 @@
 package day5
 
 import (
-	"fmt"
+	"slices"
 	"strconv"
 	"strings"
+	"time"
 
 	fileparse "Aoc.com/AdventOfCode2024/FileParse"
 )
@@ -19,9 +20,27 @@ func count(ls []string, c string) int {
 	return count
 }
 
-func Part1() {
-	//get file inputs and generate hash map
-	var counter int64
+func firstInd(ls []string, c []string) (bool, int) {
+	//returns the first index
+	var ind []int
+	var lowestId int
+	var validity bool
+	for _, i := range c {
+		if slices.Contains(ls, i) {
+			ind = append(ind, slices.Index(ls, i))
+		}
+	}
+	if len(ind) != 0 {
+		lowestId = slices.Min(ind)
+		validity = false
+	} else {
+		lowestId = -1
+		validity = true
+	}
+	return validity, lowestId
+}
+
+func mapper() (map[string][]string, []string) {
 	guide := fileparse.FileParse("day5/InputGuide.txt")
 	pages := fileparse.FileParse("day5/Input.txt")
 	pageGuide := make(map[string][]string)
@@ -31,43 +50,94 @@ func Part1() {
 		i, ok := pageGuide[firstpage]
 		if ok {
 			pageGuide[firstpage] = append(i, laterpage)
-		} else { //first entry of preceeding page in guide
+		} else {
 			var val []string
 			val = append(val, laterpage)
 			pageGuide[firstpage] = val
-
 		}
 	}
+	return pageGuide, pages
+}
 
-	for _, i := range pages {
-		var buffer []string
-		line := strings.Split(i, ",")
-		var validity bool
-		for _, j := range line {
-			invaildPg := pageGuide[j]
-			for _, k := range invaildPg {
-				if count(buffer, k) != 0 {
-					//pagefile is invalid
-					validity = false
-					break
-				}
-				validity = true
-			}
-			//page num is valid
-			if validity {
-				buffer = append(buffer, j)
-			} else {
+func makeValid(line []string, pageGuide map[string][]string) []string {
+	var buffer []string
+	var isValid bool
+	var firstIdx int
+	for _, j := range line {
+		invaildPg := pageGuide[j]
+		isValid, firstIdx = firstInd(buffer, invaildPg)
+		if isValid {
+			buffer = append(buffer, j)
+		} else {
+			buffer = slices.Insert(buffer, firstIdx, j)
+		}
+	}
+	return buffer
+}
+
+func lineValidation(i string, pageGuide map[string][]string) bool {
+	var isValid bool
+	var buffer []string
+	line := strings.Split(i, ",")
+
+	for _, j := range line {
+		invaildPg := pageGuide[j]
+		for _, k := range invaildPg {
+			if count(buffer, k) != 0 {
+				//pagefile is invalid
+				isValid = false
 				break
 			}
-
+			isValid = true
 		}
+		if isValid {
+			buffer = append(buffer, j)
+		} else {
+			break
+		}
+	}
+	return isValid
+}
+
+func Part1() (time.Duration, time.Duration, int) {
+	//get file inputs and generate hash map
+	ParseStart := time.Now()
+	var counter int
+	pageGuide, pages := mapper()
+	ParseTime := time.Since(ParseStart)
+	P1Start := time.Now()
+	var validity bool
+	for _, i := range pages {
+		line := strings.Split(i, ",")
+		validity = lineValidation(i, pageGuide)
 		if validity {
 
 			midVal, _ := strconv.Atoi(line[len(line)/2])
-			counter += int64(midVal)
+			counter += midVal
 		}
 
 	}
-	fmt.Println(counter)
+	P1Time := time.Since(P1Start)
+	return ParseTime, P1Time, counter
+}
 
+func Part2() (time.Duration, time.Duration, int) {
+	ParseStart := time.Now()
+	var counter int
+	pageGuide, pages := mapper()
+	ParseTime := time.Since(ParseStart)
+	P2Start := time.Now()
+	var validity bool
+	for _, i := range pages {
+		line := strings.Split(i, ",")
+		validity = lineValidation(i, pageGuide)
+		if !validity {
+			validline := makeValid(line, pageGuide)
+			midVal, _ := strconv.Atoi(validline[len(validline)/2])
+			counter += midVal
+		}
+
+	}
+	P2Time := time.Since(P2Start)
+	return ParseTime, P2Time, counter
 }
