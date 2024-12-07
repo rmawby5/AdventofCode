@@ -16,7 +16,6 @@ func Part1() (time.Duration, time.Duration, int) {
 	for _, i := range raw {
 		input = append(input, strings.Split(i, ""))
 	}
-
 	//get startpoint
 	for i, lin := range raw {
 		if strings.Contains(lin, "^") {
@@ -26,36 +25,29 @@ func Part1() (time.Duration, time.Duration, int) {
 	}
 	ParseTime := time.Since(ParseStart)
 	P1Start := time.Now()
-
 	nextrow := row
 	nextcol := col
 	block := true
 	inMap := true
 	currentDirInd := 0                                         //always starts moving up
 	directionMods := [][]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}} //direction modifiers Up -> Right -> Down -> Left
-
 	//pathing loop
 	for inMap {
 		currentDir := directionMods[currentDirInd]
-
 		block = true
 		for block {
 			nextrow = row + currentDir[0]
 			nextcol = col + currentDir[1]
-
 			if nextrow == -1 || nextrow == (len(input)) || nextcol == -1 || nextcol == (len(input[0])) { // if boundary (goal) is reached
 				input[row][col] = "X"
 				inMap = false
-
 				break
 			} else if input[nextrow][nextcol] == "#" {
-
 				if currentDirInd == 3 {
 					currentDirInd = 0
 				} else {
 					currentDirInd += 1
 				}
-
 				block = false
 			} else { //continue as normal, mark block, update coords to next coords
 				input[row][col] = "X"
@@ -63,9 +55,7 @@ func Part1() (time.Duration, time.Duration, int) {
 				col = nextcol
 			}
 		}
-
 	}
-
 	steps := 0
 	for _, i := range input {
 		for _, j := range i {
@@ -75,9 +65,7 @@ func Part1() (time.Duration, time.Duration, int) {
 		}
 	}
 	P1Time := time.Since(P1Start)
-
 	return ParseTime, P1Time, steps
-
 }
 
 func Part2() (time.Duration, time.Duration, int) {
@@ -91,7 +79,6 @@ func Part2() (time.Duration, time.Duration, int) {
 	for _, i := range raw {
 		input = append(input, strings.Split(i, ""))
 	}
-
 	//get startpoint
 	for i, lin := range raw {
 		if strings.Contains(lin, "^") {
@@ -99,12 +86,9 @@ func Part2() (time.Duration, time.Duration, int) {
 			startCol = strings.Index(lin, "^")
 		}
 	}
-
 	ParseTime := time.Since(ParseStart)
 	P2Start := time.Now()
-
 	var blockLocations [][]int
-
 	row = startRow
 	col = startCol
 	nextrow := row
@@ -113,23 +97,19 @@ func Part2() (time.Duration, time.Duration, int) {
 	inMap := true
 	currentDirInd := 0                                         //always starts moving up
 	directionMods := [][]int{{-1, 0}, {0, 1}, {1, 0}, {0, -1}} //direction modifiers Up -> Right -> Down -> Left
-
 	//pathing loop
 	for inMap {
 		currentDir := directionMods[currentDirInd]
-
 		block = true
 		for block {
 			nextrow = row + currentDir[0]
 			nextcol = col + currentDir[1]
-
 			if nextrow == -1 || nextrow == (len(input)) || nextcol == -1 || nextcol == (len(input[0])) { // if boundary (goal) is reached
 				if input[row][col] != "X" {
 					input[row][col] = "X"
 					blockLocations = append(blockLocations, []int{row, col})
 				}
 				inMap = false
-
 				break
 			} else if input[nextrow][nextcol] == "#" {
 				//hit block, turn right
@@ -139,7 +119,6 @@ func Part2() (time.Duration, time.Duration, int) {
 				} else {
 					currentDirInd += 1
 				}
-
 				block = false
 			} else { //continue as normal, mark block, update coords to next coords
 				if input[row][col] != "X" {
@@ -150,9 +129,7 @@ func Part2() (time.Duration, time.Duration, int) {
 				col = nextcol
 			}
 		}
-
 	}
-
 	/// for brute force = for each coord in slice "block location", try the loop above with addition of loop detection (look two blocks ahead rather than 1.)
 	loopCount := 0
 	for _, c := range blockLocations {
@@ -168,10 +145,8 @@ func Part2() (time.Duration, time.Duration, int) {
 		col = startCol
 		//place extra block
 		inputMod[c[0]][c[1]] = "#"
-
 		for inMap {
 			currentDir := directionMods[currentDirInd]
-
 			block = true
 			for block {
 				nextrow = row + currentDir[0]
@@ -189,31 +164,25 @@ func Part2() (time.Duration, time.Duration, int) {
 						inMap = false
 						break
 					}
-
 					if currentDirInd == 3 {
 						currentDirInd = 0
 					} else {
 						currentDirInd += 1
 					}
-
 					next2row := row + directionMods[currentDirInd][0]
 					next2col := col + directionMods[currentDirInd][1]
 					if inputMod[next2row][next2col] != "#" {
 						inputMod[row][col] = "*"
 					}
-
 					block = false
 				} else { //continue as normal, mark current block, and move to the next block.
 					row = nextrow
 					col = nextcol
 				}
 			}
-
 		}
-
 	}
 
 	P2Time := time.Since(P2Start)
 	return ParseTime, P2Time, loopCount
-
 }
