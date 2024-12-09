@@ -18,7 +18,6 @@ func count(ls []string, c string) int {
 	return count
 }
 func checkWord(crsWrd [][]string, rowI int, colI int) int {
-
 	count := 0
 	var found bool
 	letters := []string{"M", "A", "S"}
@@ -28,16 +27,13 @@ func checkWord(crsWrd [][]string, rowI int, colI int) int {
 	newColI := colI
 	directions := [][]int{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}}
 	for _, d := range directions {
-
 		for i := range letters {
 			newRowI = newRowI + d[0]
 			newColI = newColI + d[1]
 			if newRowI < 0 || newColI < 0 || newRowI > maxY || newColI > maxX {
 				found = false
-
 				break
 			} else if crsWrd[newRowI][newColI] == letters[i] {
-
 				found = true
 			} else {
 				found = false
@@ -45,19 +41,16 @@ func checkWord(crsWrd [][]string, rowI int, colI int) int {
 			}
 		}
 		if found {
-
 			count += 1
 		}
 		newRowI = rowI
 		newColI = colI
 	}
-
 	return count
 }
 
 func checkMas(crsWrd [][]string, rowI int, colI int) int {
 	var valid int
-
 	pair1 := []string{crsWrd[rowI-1][colI-1], crsWrd[rowI+1][colI+1]}
 	pair2 := []string{crsWrd[rowI-1][colI+1], crsWrd[rowI+1][colI-1]}
 	if count(pair1, "M") == 1 && count(pair1, "S") == 1 && count(pair2, "M") == 1 && count(pair2, "S") == 1 {
@@ -71,7 +64,6 @@ func checkMas(crsWrd [][]string, rowI int, colI int) int {
 func Part1() (time.Duration, time.Duration, int) {
 	ParseStart := time.Now()
 	input := fileparse.FileParse("day4/Input.txt")
-
 	var crossWord [][]string
 	for _, i := range input {
 		crossWord = append(crossWord, strings.Split(i, ""))
@@ -106,7 +98,6 @@ func Part2() (time.Duration, time.Duration, int) {
 				if colIdx != 0 && colIdx != (len(row)-1) {
 					if col == "A" {
 						XCount += checkMas(crossWord, rowIdx, colIdx)
-
 					}
 				}
 			}

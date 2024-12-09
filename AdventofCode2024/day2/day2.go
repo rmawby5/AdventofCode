@@ -40,8 +40,6 @@ func lineCopy(report []int) []int {
 
 func lineCopyDouble(report []int, i int) ([]int, []int) {
 	//Creates two copies of the report
-	//Var1 = removed level left of i
-	//Var2 = removed lever right of i
 	Var1 := lineCopy(report)
 	Var2 := lineCopy(report)
 	reportVar1 := append(Var1[:(i-1)], Var1[i:]...)
@@ -77,12 +75,9 @@ func dampedReportCheck(report []int) bool {
 				if reportCheck(dvar2) {
 					return true
 				}
-
 				return false
 			}
-
 		} else {
-
 			dvar, dvar2 := lineCopyDouble(report, i)
 			if reportCheck(dvar) {
 				return true
@@ -103,7 +98,6 @@ func Part1() (time.Duration, time.Duration, int) {
 	P1Start := time.Now()
 	safeCount := 0
 	var lineFormated []string
-
 	for i := range input {
 		var lineCon []int
 		lineFormated = strings.Split(input[i], " ")
@@ -130,7 +124,6 @@ func Part2() (time.Duration, time.Duration, int) {
 	P2Start := time.Now()
 	dampedSafeCount := 0
 	var lineFormated []string
-
 	for i := range input {
 		var lineCon []int
 		lineFormated = strings.Split(input[i], " ")

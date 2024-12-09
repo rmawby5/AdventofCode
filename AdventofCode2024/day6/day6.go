@@ -113,7 +113,6 @@ func Part2() (time.Duration, time.Duration, int) {
 				break
 			} else if input[nextrow][nextcol] == "#" {
 				//hit block, turn right
-				//fmt.Println("Wibble")
 				if currentDirInd == 3 {
 					currentDirInd = 0
 				} else {
@@ -151,15 +150,11 @@ func Part2() (time.Duration, time.Duration, int) {
 			for block {
 				nextrow = row + currentDir[0]
 				nextcol = col + currentDir[1]
-
 				if nextrow == -1 || nextrow == (len(inputMod)) || nextcol == -1 || nextcol == (len(inputMod[0])) { // if boundary (goal) is reached
 					inMap = false
-
 					break
 				} else if inputMod[nextrow][nextcol] == "#" {
-
 					if inputMod[row][col] == "*" {
-
 						loopCount += 1
 						inMap = false
 						break

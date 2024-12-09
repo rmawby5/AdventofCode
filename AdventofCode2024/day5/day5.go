@@ -79,7 +79,6 @@ func lineValidation(i string, pageGuide map[string][]string) bool {
 	var isValid bool
 	var buffer []string
 	line := strings.Split(i, ",")
-
 	for _, j := range line {
 		invaildPg := pageGuide[j]
 		for _, k := range invaildPg {
@@ -111,11 +110,9 @@ func Part1() (time.Duration, time.Duration, int) {
 		line := strings.Split(i, ",")
 		validity = lineValidation(i, pageGuide)
 		if validity {
-
 			midVal, _ := strconv.Atoi(line[len(line)/2])
 			counter += midVal
 		}
-
 	}
 	P1Time := time.Since(P1Start)
 	return ParseTime, P1Time, counter
@@ -136,7 +133,6 @@ func Part2() (time.Duration, time.Duration, int) {
 			midVal, _ := strconv.Atoi(validline[len(validline)/2])
 			counter += midVal
 		}
-
 	}
 	P2Time := time.Since(P2Start)
 	return ParseTime, P2Time, counter

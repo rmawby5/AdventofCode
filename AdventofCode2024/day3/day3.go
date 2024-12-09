@@ -34,7 +34,6 @@ func Part1() (time.Duration, time.Duration, int) {
 	ParseTime := time.Since(ParseStart)
 	P1Start := time.Now()
 	Total := 0
-
 	pattn := regexp.MustCompile(`mul\(\d+,\d+\)`)
 	for _, i := range pattn.FindAllString(stg, -1) {
 		Total += multiple(i)
@@ -50,9 +49,7 @@ func Part2() (time.Duration, time.Duration, int) {
 	P2Start := time.Now()
 	includeMul := true
 	adjustedTotal := 0
-
 	pattn := regexp.MustCompile(`don\'t\(\)|do\(\)|mul\(\d+,\d+\)`)
-	//StgMatch := pattn.FindAllString(stg, -1)
 
 	for _, i := range pattn.FindAllString(stg, -1) {
 		if i == "don't()" {

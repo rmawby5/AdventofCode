@@ -26,7 +26,6 @@ func linesplit(filelines []string) {
 		CurrentLineSplit = strings.Split(CurrentLine, "   ")
 		n1, err1 = strconv.Atoi(CurrentLineSplit[0])
 		n2, err2 = strconv.Atoi(CurrentLineSplit[1])
-
 		if err1 != nil {
 			// ... handle error
 			panic(err1)
@@ -35,14 +34,11 @@ func linesplit(filelines []string) {
 			// ... handle error
 			panic(err2)
 		}
-
 		ls1 = append(ls1, n1)
 		ls2 = append(ls2, n2)
-
 	}
 	sort.Ints(ls1)
 	sort.Ints(ls2)
-
 }
 
 func count(ls []int, c int) int {
@@ -59,7 +55,6 @@ func Part1() {
 	startfile := time.Now()
 	var input = fileparse.FileParse("day1/Input.txt")
 	fileparsetime := time.Since(startfile)
-
 	startP1 := time.Now()
 	linesplit(input)
 	var Totaldistance int
@@ -71,7 +66,6 @@ func Part1() {
 		} else {
 			Totaldistance = Totaldistance + diff
 		}
-
 	}
 
 	elapsedPart1 := time.Since(startP1)
@@ -87,9 +81,7 @@ func Part2() {
 	for i := range ls1 {
 		Similarity = Similarity + (ls1[i] * count(ls2, ls1[i]))
 	}
-
 	elapsedPart2 := time.Since(startP2)
-
 	fmt.Printf("Similarity: %d\n", Similarity)
 	fmt.Printf("Time for Part 2: %v\n", elapsedPart2)
 }
