@@ -76,28 +76,58 @@ func Part1() (time.Duration, time.Duration, int64) {
 
 }
 
-/*
+
 //Part 2 WIP
 func Part2() (time.Duration, time.Duration, int64) {
 	ParseStart := time.Now()
 	raw := fileparse.FileParse("day9/Input.txt")
-	disk := diskExpander(raw)
-	//Insert additional processsing here
 	ParseTime := time.Since(ParseStart)
-	P1Start := time.Now()
-	//inerst Puzzle solution here
-	disksize := len(disk) - 2
-	buffer := []string{disk[len(disk)-1]}
-	for i := disksize; i > -1; i-- {
-		if slices.Contains(buffer, disk[i]) {
-			buffer = append(buffer, disk[i])
+	P2Start := time.Now()
+	//Insert additional processsing here
+	var disk [][]int
+	for i, j := range strings.Split(raw[0]) {
+		if i%2 == 0 {
+			blockSize, _ := strconv.Atoi(j)
+			id := i / 2
+		} else {
+			blockSize, _ := strconv.Atoi(j)
+			id := -1
 		}
-
+		block := []int{id, blockSize}
+		disk = append(disk, block)
 	}
 
-	chksum := 0
+	//inerst Puzzle solution here
+	//create compacted disk
+	disksize := len(disk) - 1
+	for i, j := disksize; i > 0; i-- {
+		if j[0] != -1 { //if block is file and no free space, attempt to move
+			spaceIdx, spaceRem := getSpace(disk, j, i)
+			if spaceIdx != -1 { //freespace is found
+				tempDisk := disk[:spaceIdx]
+				tempDisk = append(tempDisk, j)
+				if spaceRem != 0 {
+					newSpaceBlock := []int{-1, spaceRem}
+					tempDisk = append(tempDisk, newSpaceBlock)
+				}
+				disk[i] := []int{-1, j[1]}
+				tempDisk = append(tempDisk, disk[(spaceIdx+1):])
+				tmp := copy(disk, tempDisk)
+			}
+		}
+	}
 
-	P1Time := time.Since(P1Start)
-	return ParseTime, P1Time, int64(chksum)
+	//calc checksum for compacted disk
+	var chksum int64
+	chksum = 0
+	expIxd := 0
+	for i, j := range disk {
+		if j[0] != -1 { //ignore free space blocks
+			chksum += int64(j[0] * ((j[1] * expIdx) + j[1]*(j[1]+1)*0.5)) //calulate the checksum for the specific block based on the expanded Eq indx, block size and file ID
+			expIdx += j[1]
+		}
+	}
+
+	P2Time := time.Since(P2Start)
+	return ParseTime, P2Time, chksum
 }
-*/
