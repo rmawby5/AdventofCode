@@ -111,7 +111,7 @@ func Part2() (time.Duration, time.Duration, int64) {
 					tempDisk = append(tempDisk, newSpaceBlock)
 				}
 				disk[i] := []int{-1, j[1]}
-				tempDisk = append(tempDisk, disk[(spaceIdx+1):])
+				tempDisk = append(tempDisk, disk[(spaceIdx+1):]...)
 				tmp := copy(disk, tempDisk)
 			}
 		}
