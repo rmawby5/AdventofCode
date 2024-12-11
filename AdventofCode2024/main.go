@@ -10,7 +10,7 @@ import (
 func main() {
 
 	Parse1Time, P1Time, P1Total := day9.Part1()
-	//Parse2Time, P2Time, P2Total := day9.Part2()
+	Parse2Time, P2Time, P2Total := day9.Part2()
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Part", "Parse Time", "Part Time", "Result"})
@@ -18,7 +18,7 @@ func main() {
 		{1, Parse1Time, P1Time, P1Total},
 	})
 	t.AppendSeparator()
-	//t.AppendRow([]interface{}{2, Parse2Time, P2Time, P2Total})
+	t.AppendRow([]interface{}{2, Parse2Time, P2Time, P2Total})
 	t.Render()
 
 }
@@ -32,7 +32,7 @@ func Part1() (time.Duration, time.Duration, int64) {
 
 	ParseTime := time.Since(ParseStart)
 	P1Start := time.Now()
-	//inerst Puzzle solution here
+	//insert Puzzle solution here
 
 
 	P1Time := time.Since(P1Start)
