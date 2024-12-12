@@ -28,12 +28,9 @@ func lenInt(i int) bool {
 		count++
 	}
 	return count%2 == 0
-
 }
 
 func blinker(input int, blinkCount int, blinkLimit int, cache map[string]int) int {
-	//stones := 0
-	//case 0
 	n := strconv.Itoa(input) + "," + strconv.Itoa(blinkCount)
 	if cache[n] == 0 {
 		if blinkCount == blinkLimit {
@@ -44,13 +41,11 @@ func blinker(input int, blinkCount int, blinkLimit int, cache map[string]int) in
 			} else if lenInt(input) { //check function
 				l, r := splitter(input)
 				cache[n] = blinker(l, blinkCount+1, blinkLimit, cache) + blinker(r, blinkCount+1, blinkLimit, cache)
-				//stones += blinker(r, blinkCount+1,cache)
 			} else {
 				cache[n] = blinker(input*2024, blinkCount+1, blinkLimit, cache)
 			}
 		}
 	}
-
 	return cache[n]
 }
 
@@ -71,10 +66,8 @@ func Part1() (time.Duration, time.Duration, int) {
 	}
 	//inerst Puzzle solution here
 	stoneCount := 0
-	//fmt.Println(in)
 	for _, k := range in {
 		stoneCount += blinker(k, 0, 25, cache)
-
 	}
 	P1Time := time.Since(P1Start)
 	return ParseTime, P1Time, stoneCount
@@ -97,10 +90,8 @@ func Part2() (time.Duration, time.Duration, int) {
 	}
 	//inerst Puzzle solution here
 	stoneCount := 0
-	//fmt.Println(in)
 	for _, k := range in {
 		stoneCount += blinker(k, 0, 75, cache)
-
 	}
 	P2Time := time.Since(P2Start)
 	return ParseTime, P2Time, stoneCount

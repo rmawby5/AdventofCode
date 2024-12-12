@@ -80,7 +80,6 @@ func Part1() (time.Duration, time.Duration, int64) {
 	for i := disksize; (disksize - dots) < i; i-- {
 		if splitDisk[i] != "." { //move to start
 			lastElmnt := splitDisk[i]
-			//firstSpace := slices.Index(splitDisk, ".")
 			openSpace := 0
 			for l := firstSpace; l < i; l++ {
 				if splitDisk[l] == "." {
@@ -102,7 +101,6 @@ func Part2() (time.Duration, time.Duration, int64) {
 	ParseStart := time.Now()
 	raw := fileparse.FileParse("day9/Input.txt")
 	ParseTime := time.Since(ParseStart)
-
 	P2Start := time.Now()
 	var disk [][]int
 	id := 0

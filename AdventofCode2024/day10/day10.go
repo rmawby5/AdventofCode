@@ -60,12 +60,8 @@ func trailScoring(mp [][]int, coords [][]int, elev int) int {
 func trailRating(mp [][]int, coords [][]int, elev int) int {
 	trailCount := 0
 	var nextCoords [][]int
-	//var dupes []string
 	for _, i := range coords {
-		//stgCord := strconv.Itoa(i[0]) + strconv.Itoa(i[1])
 		if mp[i[0]][i[1]] == 9 {
-			//add to list of confirmed destinations
-			//dupes = append(dupes, stgCord)
 			trailCount += 1
 		} else if mp[i[0]][i[1]] != 99 {
 			//check up
@@ -117,13 +113,11 @@ func Part1() (time.Duration, time.Duration, int) {
 			v, _ := strconv.Atoi(raw)
 			row = append(row, v)
 		}
-		//fmt.Println(row)
 		trailMap = append(trailMap, row)
 	}
 	ParseTime := time.Since(ParseStart)
 	P1Start := time.Now()
 	//insert Puzzle solution here
-
 	chksum := 0
 	for row, i := range trailMap {
 		for col, j := range i {
@@ -134,7 +128,6 @@ func Part1() (time.Duration, time.Duration, int) {
 			}
 		}
 	}
-
 	P1Time := time.Since(P1Start)
 	return ParseTime, P1Time, chksum
 }
@@ -151,7 +144,6 @@ func Part2() (time.Duration, time.Duration, int) {
 			v, _ := strconv.Atoi(raw)
 			row = append(row, v)
 		}
-		//fmt.Println(row)
 		trailMap = append(trailMap, row)
 	}
 	ParseTime := time.Since(ParseStart)
@@ -167,7 +159,6 @@ func Part2() (time.Duration, time.Duration, int) {
 			}
 		}
 	}
-
 	P2Time := time.Since(P2Start)
 	return ParseTime, P2Time, chksum
 }
