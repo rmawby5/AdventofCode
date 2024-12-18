@@ -28,10 +28,8 @@ func mover(mp [][]string, start []int, seq []string) [][]string {
 	curPos := make([]int, 2)
 	_ = copy(curPos, start)
 
-	//fmt.Println("Start : ", curPos)
 	for _, i := range seq {
 		dir := dirKey(i)
-		//fmt.Println(dir)
 		if modMp[curPos[0]+dir[0]][curPos[1]+dir[1]] == "." {
 			modMp[curPos[0]][curPos[1]] = "."
 			curPos[0] = curPos[0] + dir[0]
@@ -73,7 +71,6 @@ func gps(mp [][]string) int {
 			}
 		}
 	}
-
 	return tot
 }
 
@@ -121,7 +118,6 @@ func Part2() (time.Duration, time.Duration, int) {
 	P2Start := time.Now()
 	var pathf string
 	var mp [][]string
-
 	var start []int
 	//Insert additional processsing here
 	for _, i := range pathS {
