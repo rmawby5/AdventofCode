@@ -18,9 +18,7 @@ func dirKey(dir string) []int {
 	} else if dir == "^" {
 		return []int{-1, 0}
 	}
-
 	return []int{0, 0}
-
 }
 
 func mover(mp [][]string, start []int, seq []string) [][]string {
@@ -61,14 +59,7 @@ func mover(mp [][]string, start []int, seq []string) [][]string {
 				}
 			}
 		}
-		/*
-			for _, k := range modMp {
-				fmt.Println(k)
-			}
-		*/
-
 	}
-
 	return modMp
 }
 
@@ -112,24 +103,9 @@ func Part1() (time.Duration, time.Duration, int) {
 		} else {
 			mp = append(mp, strings.Split(j, ""))
 		}
-
 	}
-
-	/*
-		fmt.Println(path)
-		fmt.Println(start)
-
-		for _, k := range mp {
-			fmt.Println(k)
-		}
-	*/
 	//insert Puzzle solution here
 	modMap := mover(mp, start, path)
-	/*
-		for _, k := range modMap {
-			fmt.Println(k)
-		}
-	*/
 	sum := gps(modMap)
 
 	P1Time := time.Since(P1Start)
@@ -142,7 +118,7 @@ func Part2() (time.Duration, time.Duration, int) {
 	mpRaw := fileparse.FileParse("day15/Input.txt")
 
 	ParseTime := time.Since(ParseStart)
-	P1Start := time.Now()
+	P2Start := time.Now()
 	var pathf string
 	var mp [][]string
 
@@ -162,25 +138,11 @@ func Part2() (time.Duration, time.Duration, int) {
 		} else {
 			mp = append(mp, strings.Split(j, ""))
 		}
-
 	}
-	/*
-		fmt.Println(path)
-		fmt.Println(start)
-
-		for _, k := range mp {
-			fmt.Println(k)
-		}
-	*/
 	//insert Puzzle solution here
 	modMap := mover(mp, start, path)
-	/*
-		for _, k := range modMap {
-			fmt.Println(k)
-		}
-	*/
 	sum := gps(modMap)
 
-	P1Time := time.Since(P1Start)
-	return ParseTime, P1Time, sum
+	P2Time := time.Since(P2Start)
+	return ParseTime, P2Time, sum
 }

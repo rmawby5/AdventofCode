@@ -161,7 +161,7 @@ func Part2() (time.Duration, time.Duration, int) {
 	raw := fileparse.FileParse("day14/Input.txt")
 
 	ParseTime := time.Since(ParseStart)
-	P1Start := time.Now()
+	P2Start := time.Now()
 
 	//Insert additional processsing here
 	var input [][]string
@@ -187,6 +187,6 @@ func Part2() (time.Duration, time.Duration, int) {
 			frame = j
 		}
 	}
-	P1Time := time.Since(P1Start)
-	return ParseTime, P1Time, frame
+	P2Time := time.Since(P2Start)
+	return ParseTime, P2Time, frame
 }
