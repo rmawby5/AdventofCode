@@ -59,7 +59,6 @@ func dampedReportCheck(report []int) bool {
 				changeType--
 			}
 			if changeType != i && changeType != (0-i) { //check jump direction
-
 				if i == 2 {
 					reportTemp := lineCopy(report)
 					dvar := reportTemp[1:]
@@ -71,7 +70,6 @@ func dampedReportCheck(report []int) bool {
 				if reportCheck(dvar) {
 					return true
 				}
-
 				if reportCheck(dvar2) {
 					return true
 				}

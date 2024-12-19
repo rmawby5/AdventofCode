@@ -126,7 +126,6 @@ func Part2() (time.Duration, time.Duration, int) {
 		Totals = append(Totals, lineTotal)
 		for _, j := range strings.Split(line[1], " ") {
 			comp, _ := strconv.Atoi(j)
-
 			lineCompents = append(lineCompents, comp)
 		}
 		components = append(components, lineCompents)

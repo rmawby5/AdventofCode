@@ -19,7 +19,6 @@ func regionMapper(mp [][]string, coords [][]int, crop string) (int, int) {
 			if (i[0] - 1) >= 0 { //in bounds
 				if mp[i[0]-1][i[1]] == crop {
 					nextCoords = append(nextCoords, []int{i[0] - 1, i[1]})
-
 				} else if mp[i[0]-1][i[1]] != ("#" + crop) {
 					perimeter += 1
 				}
@@ -30,7 +29,6 @@ func regionMapper(mp [][]string, coords [][]int, crop string) (int, int) {
 			if (i[0] + 1) < len(mp) { //in bounds
 				if mp[i[0]+1][i[1]] == crop {
 					nextCoords = append(nextCoords, []int{i[0] + 1, i[1]})
-
 				} else if mp[i[0]+1][i[1]] != ("#" + crop) {
 					perimeter += 1
 				}
@@ -41,7 +39,6 @@ func regionMapper(mp [][]string, coords [][]int, crop string) (int, int) {
 			if (i[1] - 1) >= 0 { //in bounds
 				if mp[i[0]][i[1]-1] == crop {
 					nextCoords = append(nextCoords, []int{i[0], i[1] - 1})
-
 				} else if mp[i[0]][i[1]-1] != ("#" + crop) {
 					perimeter += 1
 				}
@@ -52,7 +49,6 @@ func regionMapper(mp [][]string, coords [][]int, crop string) (int, int) {
 			if (i[1] + 1) < len(mp[i[0]]) { //in bounds
 				if mp[i[0]][i[1]+1] == crop {
 					nextCoords = append(nextCoords, []int{i[0], i[1] + 1})
-
 				} else if mp[i[0]][i[1]+1] != ("#" + crop) {
 					perimeter += 1
 				}
@@ -122,7 +118,6 @@ func regionMapperBulk(mp [][]string, coords [][]int, crop string) (int, int) {
 			if (i[0] - 1) >= 0 { //in bounds
 				if mp[i[0]-1][i[1]] == crop {
 					nextCoords = append(nextCoords, []int{i[0] - 1, i[1]})
-
 				} else if mp[i[0]-1][i[1]] != ("#" + crop) {
 					u = 1
 				}
@@ -133,7 +128,6 @@ func regionMapperBulk(mp [][]string, coords [][]int, crop string) (int, int) {
 			if (i[0] + 1) < len(mp) { //in bounds
 				if mp[i[0]+1][i[1]] == crop {
 					nextCoords = append(nextCoords, []int{i[0] + 1, i[1]})
-
 				} else if mp[i[0]+1][i[1]] != ("#" + crop) {
 					d = 1
 				}
@@ -144,7 +138,6 @@ func regionMapperBulk(mp [][]string, coords [][]int, crop string) (int, int) {
 			if (i[1] - 1) >= 0 { //in bounds
 				if mp[i[0]][i[1]-1] == crop {
 					nextCoords = append(nextCoords, []int{i[0], i[1] - 1})
-
 				} else if mp[i[0]][i[1]-1] != ("#" + crop) {
 					l = 1
 				}
@@ -155,7 +148,6 @@ func regionMapperBulk(mp [][]string, coords [][]int, crop string) (int, int) {
 			if (i[1] + 1) < len(mp[i[0]]) { //in bounds
 				if mp[i[0]][i[1]+1] == crop {
 					nextCoords = append(nextCoords, []int{i[0], i[1] + 1})
-
 				} else if mp[i[0]][i[1]+1] != ("#" + crop) {
 					r = 1
 				}
@@ -164,7 +156,6 @@ func regionMapperBulk(mp [][]string, coords [][]int, crop string) (int, int) {
 			}
 			//diagonals (just for corners)
 			if (i[1]+1) < len(mp[i[0]]) && (i[0]+1) < len(mp) {
-
 				if mp[i[0]+1][i[1]+1] != crop && mp[i[0]+1][i[1]+1] != ("#"+crop) {
 					dr = 1
 				}
@@ -172,7 +163,6 @@ func regionMapperBulk(mp [][]string, coords [][]int, crop string) (int, int) {
 				dr = 1
 			}
 			if (i[1]+1) < len(mp[i[0]]) && (i[0]-1) >= 0 {
-
 				if mp[i[0]-1][i[1]+1] != crop && mp[i[0]-1][i[1]+1] != ("#"+crop) {
 					ur = 1
 				}
