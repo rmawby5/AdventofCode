@@ -9,7 +9,7 @@ import (
 
 func main() {
 	Parse1Time, P1Time, P1Total := day20.Part1()
-	//Parse2Time, P2Time, P2Total := day20.Part2()
+	Parse2Time, P2Time, P2Total := day20.Part2()
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Part", "Parse Time", "Part Time", "Result"})
@@ -17,7 +17,7 @@ func main() {
 		{1, Parse1Time, P1Time, P1Total},
 	})
 	t.AppendSeparator()
-	//t.AppendRow([]interface{}{2, Parse2Time, P2Time, P2Total})
+	t.AppendRow([]interface{}{2, Parse2Time, P2Time, P2Total})
 	t.Render()
 
 }
