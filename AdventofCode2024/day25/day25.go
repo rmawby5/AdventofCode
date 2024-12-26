@@ -28,12 +28,10 @@ func conv(block []string) ([]int, string) {
 	if typ == "Lock" {
 		for i := 0; i < len(block[0]); i++ {
 			for j := 0; j < len(block); j++ {
-				//fmt.Println(string(block[j][i]))
 				if string(block[j][i]) != "#" {
 					heights[i] = j
 					break
 				}
-
 			}
 		}
 	} else if typ == "Key" {
@@ -43,7 +41,6 @@ func conv(block []string) ([]int, string) {
 					heights[i] = (len(block) - j)
 					break
 				}
-
 			}
 		}
 	}
@@ -64,11 +61,8 @@ func Part1() (time.Duration, time.Duration, int) {
 	for r, i := range raw {
 		if len(i) != 0 {
 			buffer = append(buffer, i)
-
 		}
 		if len(i) == 0 || r == len(raw)-1 {
-			//fmt.Println(buffer)
-			//end of block reached, process heights
 			switch h, t := conv(buffer); t {
 			case "Key":
 				keys = append(keys, h)
@@ -77,14 +71,9 @@ func Part1() (time.Duration, time.Duration, int) {
 			}
 			buffer = nil
 		}
-
 	}
-	//fmt.Println(locks)
-	//fmt.Println("Keys : ")
-	//fmt.Println(keys)
 	//insert Puzzle solution here
 	sum := 0
-
 	for _, l := range locks {
 		for _, k := range keys {
 			if comp(l, k) {
