@@ -42,14 +42,14 @@ func count(ls []string, c string) int {
 	return count
 }
 
-func checksum(ls []string) int64 {
-	var sum int64
+func checksum(ls []string) int {
+	var sum int
 	sum = 0
 	for i, j := range ls {
 		l, _ := strconv.Atoi(j)
-		sum += int64(i * l)
+		sum += (i * l)
 	}
-	return int64(sum)
+	return sum
 }
 
 func getSpace(dsk [][]int, block []int, rightlim int) (int, int) {
@@ -66,7 +66,7 @@ func getSpace(dsk [][]int, block []int, rightlim int) (int, int) {
 	return spaceBlockIdx, spaceRemaining
 }
 
-func Part1() (time.Duration, time.Duration, int64) {
+func Part1() (time.Duration, time.Duration, int) {
 	ParseStart := time.Now()
 	raw := fileparse.FileParse("day9/Input.txt")
 	ParseTime := time.Since(ParseStart)
@@ -97,7 +97,7 @@ func Part1() (time.Duration, time.Duration, int64) {
 	return ParseTime, P1Time, chksum
 }
 
-func Part2() (time.Duration, time.Duration, int64) {
+func Part2() (time.Duration, time.Duration, int) {
 	ParseStart := time.Now()
 	raw := fileparse.FileParse("day9/Input.txt")
 	ParseTime := time.Since(ParseStart)
@@ -133,12 +133,12 @@ func Part2() (time.Duration, time.Duration, int64) {
 		}
 	}
 	//calc checksum for compacted disk
-	var chksum int64
+	var chksum int
 	chksum = 0
 	expIdx := 0
 	for _, j := range disk {
 		if j[0] != -1 { //ignore free space blocks
-			chksum += int64(j[0] * ((j[1] * (expIdx - 1)) + j[1]*(j[1]+1)/2)) //calulate the checksum for the specific block based on the expande		d Eq indx, block size and file ID
+			chksum += (j[0] * ((j[1] * (expIdx - 1)) + j[1]*(j[1]+1)/2)) //calulate the checksum for the specific block based on the expande		d Eq indx, block size and file ID
 			expIdx += j[1]
 		} else {
 			expIdx += j[1]

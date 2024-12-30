@@ -75,7 +75,7 @@ func stepperS(botStart []string, w int, h int, steps int) string {
 	}
 	return finalPos
 }
-func adder(bots [][]int, w int, h int) int64 {
+func adder(bots [][]int, w int, h int) int {
 	q1 := 0
 	q2 := 0
 	q3 := 0
@@ -100,7 +100,7 @@ func adder(bots [][]int, w int, h int) int64 {
 			}
 		}
 	}
-	return int64(q1 * q2 * q3 * q4)
+	return (q1 * q2 * q3 * q4)
 }
 
 func count(ls []string, c string) int {
@@ -124,7 +124,7 @@ func uniqueCheck(bots []string) bool {
 	return midCount < 2
 }
 
-func Part1() (time.Duration, time.Duration, int64) {
+func Part1() (time.Duration, time.Duration, int) {
 	ParseStart := time.Now()
 	raw := fileparse.FileParse("day14/Input.txt")
 
