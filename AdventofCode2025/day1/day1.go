@@ -69,9 +69,6 @@ func Part2() (time.Duration, time.Duration, int) {
 		case "R":
 			p2 = p2 + ((position + weight) / 100)
 			position = (position + weight) % 100
-			if position >= 100 {
-				position = position - 100
-			}
 		}
 	}
 
