@@ -54,28 +54,24 @@ func Part2() (time.Duration, time.Duration, int) {
 		weight, _ = strconv.Atoi(string(i[1:]))
 		switch direction {
 		case "L":
-			p2 = p2 + (weight / 100)
-			position = position - (weight % 100)
-			if (position < 0) && (position != (0 - (weight % 100))) {
-				position = position + 100
+			p2 = p2 - (position-weight)/100
+			position = (position - weight) % 100
+			if (position < 0) && (position != (0 - (weight % 100))) { //moving left from a point other than zero
 				p2++
 			}
-			if position < 0 {
+			if position == 0 { //land on 0
+				p2++
+			}
+			if position < 0 { //reset to positive vale
 				position = position + 100
 			}
+
 		case "R":
-			p2 = p2 + (weight / 100)
-			position = position + (weight % 100)
-			if position > 100 {
-				position = position - 100
-				p2++
-			}
-			if position == 100 {
+			p2 = p2 + ((position + weight) / 100)
+			position = (position + weight) % 100
+			if position >= 100 {
 				position = position - 100
 			}
-		}
-		if position == 0 {
-			p2++
 		}
 	}
 
