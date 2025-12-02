@@ -8,24 +8,24 @@ import (
 	fileparse "Aoc.com/AdventOfCode2025/FileParse"
 )
 
-func Rep(v string) bool {
+func Pattern(v string) bool {
 	spl := len(v) / 2
 	v1s := v[:spl]
 	v2s := v[spl:]
 	return v1s == v2s
 }
 
-func Splitter(v int) bool {
+func CenterSplit(v int) bool {
 	var res bool
 	res = false
 	vs := strconv.Itoa(v)
 	if len(vs)%2 == 0 {
-		res = Rep(vs)
+		res = Pattern(vs)
 	}
 	return res
 }
 
-func Ran(ln string) (int, int) {
+func Get_Lims(ln string) (int, int) {
 	lims := strings.Split(ln, "-")
 	low, _ := strconv.Atoi(lims[0])
 	up, _ := strconv.Atoi(lims[1])
@@ -41,7 +41,7 @@ func Chunk(st string, sp int) []string {
 	return va
 }
 
-func RepAll(va []string) bool {
+func PatternAll(va []string) bool {
 	for _, i := range va {
 		if va[0] != i {
 			return false
@@ -50,13 +50,13 @@ func RepAll(va []string) bool {
 	return true
 }
 
-func SplitLevels(v int) bool {
+func FactorSplit(v int) bool {
 	vs := strconv.Itoa(v)
 	mx := len(vs) / 2
 	for k := 1; k <= mx; k++ {
 		if len(vs)%k == 0 {
 			va := Chunk(vs, k)
-			if RepAll(va) {
+			if PatternAll(va) {
 				return true
 			}
 		}
@@ -74,9 +74,9 @@ func Part1() (time.Duration, time.Duration, int) {
 	startP1 := time.Now()
 
 	for _, i := range Input {
-		L, U := Ran(i)
+		L, U := Get_Lims(i)
 		for j := L; j < (U + 1); j++ {
-			if Splitter(j) {
+			if CenterSplit(j) {
 				p1 = p1 + j
 			}
 		}
@@ -96,9 +96,9 @@ func Part2() (time.Duration, time.Duration, int) {
 	//puzzle
 	startP2 := time.Now()
 	for _, i := range Input {
-		L, U := Ran(i)
+		L, U := Get_Lims(i)
 		for j := L; j < (U + 1); j++ {
-			if SplitLevels(j) {
+			if FactorSplit(j) {
 				p2 = p2 + j
 			}
 		}
