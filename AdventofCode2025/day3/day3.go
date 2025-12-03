@@ -20,7 +20,6 @@ func Power(bank string, pos int, pow int) int {
 			D1 = curVal
 			idx = i
 		}
-
 	}
 	if pow > 0 {
 		D2 = Power(bank, (idx + 1), (pow - 1))
@@ -39,13 +38,11 @@ func Part1() (time.Duration, time.Duration, int) {
 	for _, i := range Input {
 		p1 += Power(i, 0, 1)
 	}
-
 	P1Time := time.Since(startP1)
 	return ParseTime, P1Time, p1
 }
 
 func Part2() (time.Duration, time.Duration, int) {
-
 	p2 := 0
 	//parse function
 	ParseStart := time.Now()
