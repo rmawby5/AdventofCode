@@ -29,6 +29,7 @@ func Power(bank string, pos int, pow int) int {
 
 func Part1() (time.Duration, time.Duration, int) {
 	p1 := 0
+
 	//parse function
 	ParseStart := time.Now()
 	Input := fileparse.FileParse("day3/Input.txt")
