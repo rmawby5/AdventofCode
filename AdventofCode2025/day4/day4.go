@@ -42,7 +42,7 @@ func Part1() (time.Duration, time.Duration, int) {
 	p1 := 0
 	//parse function
 	ParseStart := time.Now()
-	Input := fileparse.FileParse("day4/TestInput.txt")
+	Input := fileparse.FileParse("day4/Input.txt")
 	var InputGrid [][]string
 	var boundary []string
 	width := len(Input[0]) + 2
