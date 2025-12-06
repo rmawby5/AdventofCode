@@ -3,13 +3,13 @@ package main
 import (
 	"os"
 
-	"Aoc.com/AdventOfCode2025/day5"
+	"Aoc.com/AdventOfCode2025/day6"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 func main() {
-	Parse1Time, P1Time, P1Total := day5.Part1()
-	Parse2Time, P2Time, P2Total := day5.Part2()
+	Parse1Time, P1Time, P1Total := day6.Part1()
+	Parse2Time, P2Time, P2Total := day6.Part2()
 
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)

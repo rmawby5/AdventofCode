@@ -54,7 +54,19 @@ func Part2() (time.Duration, time.Duration, int) {
 	p2 := 0
 	//parse function
 	ParseStart := time.Now()
-	//Input := fileparse.FileParse("day4/Input.txt")
+
+	RangeText := fileparse.FileParse("day5/Range.txt")
+	var RangeList [][]int
+
+	for _, i := range RangeText {
+		row := strings.Split(i, "-")
+		v1, _ := strconv.Atoi(row[0])
+		v2, _ := strconv.Atoi(row[1])
+		rowInt := []int{v1, v2}
+		RangeList = append(RangeList, rowInt)
+		//fmt.Println(RangeList[l])
+
+	}
 
 	ParseTime := time.Since(ParseStart)
 	//puzzle
