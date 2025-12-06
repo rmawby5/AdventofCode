@@ -2,6 +2,7 @@ package day6
 
 import (
 	"strconv"
+	"strings"
 	"time"
 
 	fileparse "Aoc.com/AdventOfCode2025/FileParse"
@@ -12,10 +13,8 @@ func Sep(row string) []string {
 	var num string
 	row = row + " "
 	for i := 0; i < len(row); i++ {
-
 		if row[i] != ' ' {
 			num = num + string(row[i])
-			//fmt.Println(num)
 		}
 		if row[i] == ' ' && len(num) != 0 {
 			rowSc = append(rowSc, num)
@@ -41,7 +40,33 @@ func Calc(comp []string) int {
 			total = total * j
 		}
 	}
-	//fmt.Println(total)
+	return total
+}
+
+func CalcMod(comp []string, op byte) int {
+	size := len(comp[0])
+	total := 0
+	switch op {
+	case '+':
+		for i := 0; i < size; i++ {
+			var curValST string
+			for j := 0; j < len(comp); j++ {
+				curValST = curValST + string(comp[j][i])
+			}
+			curVal, _ := strconv.Atoi(strings.Trim(curValST, " "))
+			total += curVal
+		}
+	case '*':
+		total = 1
+		for i := 0; i < size; i++ {
+			var curValST string
+			for j := 0; j < len(comp); j++ {
+				curValST = curValST + string(comp[j][i])
+			}
+			curVal, _ := strconv.Atoi(strings.Trim(curValST, " "))
+			total = total * curVal
+		}
+	}
 	return total
 }
 
@@ -55,7 +80,6 @@ func Part1() (time.Duration, time.Duration, int) {
 		InputGrid = append(InputGrid, Sep(i))
 
 	}
-
 	ParseTime := time.Since(ParseStart)
 	//puzzle
 	startP1 := time.Now()
@@ -64,11 +88,8 @@ func Part1() (time.Duration, time.Duration, int) {
 		for j := range InputGrid {
 			comp = append(comp, InputGrid[j][i])
 		}
-		//fmt.Println(comp[len(comp)-1])
 		p1 += Calc(comp)
-
 	}
-
 	P1Time := time.Since(startP1)
 	return ParseTime, P1Time, p1
 }
@@ -78,11 +99,25 @@ func Part2() (time.Duration, time.Duration, int) {
 	//parse function
 	ParseStart := time.Now()
 	Input := fileparse.FileParse("day6/Input.txt")
-	var InputGrid [][]string
 
 	ParseTime := time.Since(ParseStart)
 	//puzzle
 	startP2 := time.Now()
+	cs := 0
+	ce := 0
+	opRow := len(Input) - 1
+	for i := 1; i < len(Input[opRow]); i++ {
+		if Input[opRow][i] != ' ' {
+			ce = i - 1
+			//puzzle processing
+			var comp []string
+			for j := 0; j < opRow; j++ {
+				comp = append(comp, Input[j][cs:ce])
+			}
+			p2 += CalcMod(comp, Input[opRow][cs])
+			cs = i
+		}
+	}
 
 	P2Time := time.Since(startP2)
 	return ParseTime, P2Time, p2
