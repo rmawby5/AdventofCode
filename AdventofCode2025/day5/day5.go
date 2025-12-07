@@ -19,21 +19,27 @@ func freshCheck(rangeList [][]int, Item string) bool {
 	return false
 }
 
-func Overlap(checked [][]int, source []int) [][]int {
+func Overlap(checked []int, source []int) ([]int, int) {
+	total := 0
 	if len(checked) == 0 {
-		return append(checked, source)
+		//first run only
+		checked = append(checked, source...)
+		return checked, total
 	}
-	if source[0] <= checked[len(checked)-1][1]+1 {
+
+	if source[0] <= checked[1]+1 {
 		//start overlaps with previous range
-		if source[1] > checked[len(checked)-1][1] {
+		if source[1] > checked[1] {
 			//and new end is higher than the previous end
-			checked[len(checked)-1][1] = source[1]
+			checked[1] = source[1]
 		}
 	} else {
 		//no overlap
-		checked = append(checked, source)
+		total = (checked[1] - checked[0] + 1)
+		checked[0] = source[0]
+		checked[1] = source[1]
 	}
-	return checked
+	return checked, total
 }
 
 func Part1() (time.Duration, time.Duration, int) {
@@ -55,6 +61,7 @@ func Part1() (time.Duration, time.Duration, int) {
 	ParseTime := time.Since(ParseStart)
 	//puzzle
 	startP1 := time.Now()
+
 	for _, i := range Input {
 		if freshCheck(RangeList, i) {
 			p1++
@@ -66,10 +73,12 @@ func Part1() (time.Duration, time.Duration, int) {
 
 func Part2() (time.Duration, time.Duration, int) {
 	p2 := 0
+	partial := 0
 	//parse function
 	ParseStart := time.Now()
 	RangeText := fileparse.FileParse("day5/Range.txt")
 	var RangeList [][]int
+
 	for _, i := range RangeText {
 		row := strings.Split(i, "-")
 		v1, _ := strconv.Atoi(row[0])
@@ -80,8 +89,9 @@ func Part2() (time.Duration, time.Duration, int) {
 	ParseTime := time.Since(ParseStart)
 	//puzzle
 	startP2 := time.Now()
-	var mergedRange [][]int
+	var mergedRange []int
 	fmt.Println(len(RangeList))
+
 	for len(RangeList) > 0 {
 		LowCur := RangeList[0][0]
 		idx := 0
@@ -91,12 +101,13 @@ func Part2() (time.Duration, time.Duration, int) {
 				idx = j
 			}
 		}
-		mergedRange = Overlap(mergedRange, RangeList[idx])
+		mergedRange, partial = Overlap(mergedRange, RangeList[idx])
+		p2 += partial
 		RangeList = append(RangeList[:idx], RangeList[idx+1:]...)
 	}
-	for _, i := range mergedRange {
-		p2 += i[1] - i[0] + 1
-	}
+
+	p2 += (mergedRange[1] - mergedRange[0] + 1)
+
 	P2Time := time.Since(startP2)
 	return ParseTime, P2Time, p2
 }
