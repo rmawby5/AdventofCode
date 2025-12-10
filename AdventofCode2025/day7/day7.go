@@ -7,24 +7,27 @@ import (
 	fileparse "Aoc.com/AdventOfCode2025/FileParse"
 )
 
-func TachyonTrace(manifold [][]string, row int, pos int) int {
-
+func TachyonTrace(manifold [][]string, row int, pos int, cache map[string]int) int {
+	n := strconv.Itoa(row) + "," + strconv.Itoa(pos)
 	branch := 0
 
-	if row != (len(manifold) - 1) {
-		switch manifold[row+1][pos] {
-		case ".":
-			branch = TachyonTrace(manifold, (row + 1), pos)
-		case "^":
-			branch += TachyonTrace(manifold, (row + 1), (pos + 1))
-			branch += TachyonTrace(manifold, (row + 1), (pos - 1))
-		}
+	if cache[n] == 0 {
+		if row != (len(manifold) - 1) {
+			switch manifold[row+1][pos] {
+			case ".":
+				branch = TachyonTrace(manifold, (row + 1), pos, cache)
+			case "^":
+				branch += TachyonTrace(manifold, (row + 1), (pos + 1), cache)
+				branch += TachyonTrace(manifold, (row + 1), (pos - 1), cache)
+			}
 
-	} else {
-		branch = 1
+		} else {
+			branch = 1
+		}
+		cache[n] = branch
 	}
 
-	return branch
+	return cache[n]
 }
 
 func StringAdd(v1 string, v2 string) string {
@@ -69,11 +72,11 @@ func Part1() (time.Duration, time.Duration, int) {
 }
 
 func Part2() (time.Duration, time.Duration, int) {
-
+	cache := make(map[string]int)
 	p2 := 0
 	//parse function
 	ParseStart := time.Now()
-	Input := fileparse.Grid("day7/TestInput.txt", "")
+	Input := fileparse.Grid("day7/Input.txt", "")
 
 	ParseTime := time.Since(ParseStart)
 	//puzzle
@@ -85,7 +88,7 @@ func Part2() (time.Duration, time.Duration, int) {
 		}
 	}
 
-	p2 = TachyonTrace(Input, 1, initialPos)
+	p2 = TachyonTrace(Input, 1, initialPos, cache)
 
 	P2Time := time.Since(startP2)
 	return ParseTime, P2Time, p2
