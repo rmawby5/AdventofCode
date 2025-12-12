@@ -1,15 +1,22 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"strconv"
 
-	"Aoc.com/AdventOfCode2025/day11"
+	"Aoc.com/AdventOfCode2025/day12"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 func main() {
-	Parse1Time, P1Time, P1Total := day11.Part1()
-	Parse2Time, P2Time, P2Total := day11.Part2()
+	Parse1Time, P1Time, P1Total := day12.Part1()
+	Parse2Time, P2Time, P2Total := day12.Part2()
+	_, e1 := strconv.Atoi("1")
+	_, e2 := strconv.Atoi("e")
+	fmt.Println(e1)
+	fmt.Println(e2.Error())
+
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
 	t.AppendHeader(table.Row{"Part", "Parse Time", "Part Time", "Result"})
