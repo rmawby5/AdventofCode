@@ -1,6 +1,7 @@
 package day8
 
 import (
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -8,84 +9,99 @@ import (
 	fileparse "Aoc.com/AdventOfCode2025/FileParse"
 )
 
-func Distance(p1 string, p2 string) int {
+func CheckJunc(junctions [][]string, pair string) [][]string {
+	nodes := strings.Split(pair, "/")
+	n1 := nodes[0]
+	n2 := nodes[1]
+	n1p := false
+	n2p := false
+	n1i := 0
+	n2i := 0
 
-	p1c := strings.Split(p1, ",")
-	p2c := strings.Split(p2, ",")
-	//fmt.Println(p1c)
-	//fmt.Println(p2c)
-	//x
-	p1x, _ := strconv.Atoi(p1c[0])
-	p2x, _ := strconv.Atoi(p2c[0])
-	xd := p1x - p2x
-	//fmt.Println(xd)
-	//y
-	p1y, _ := strconv.Atoi(p1c[1])
-	p2y, _ := strconv.Atoi(p2c[1])
-	yd := p1y - p2y
-	//fmt.Println(yd)
-	//z
-	p1z, _ := strconv.Atoi(p1c[2])
-	p2z, _ := strconv.Atoi(p2c[2])
-	zd := p1z - p2z
-	//fmt.Println(zd)
-
-	return ((xd * xd) + (yd * yd) + (zd * zd))
-
-}
-
-func CheckJunc(junc [][]int, node int) int {
-	for k, i := range junc {
-		for j := range i {
-			if node == j {
-				//node is already present in a junction, return index of junction
-				return k
+	for i, junc := range junctions {
+		for _, node := range junc {
+			if node == n1 {
+				n1p = true
+				n1i = i
+			}
+			if node == n2 {
+				n2p = true
+				n2i = i
 			}
 		}
 	}
-	return -1
+
+	if n1p && !n2p {
+		junctions[n1i] = append(junctions[n1i], n2)
+	}
+	if !n1p && n2p {
+		junctions[n2i] = append(junctions[n2i], n1)
+	}
+	if n1p && n2p && (n1i != n2i) {
+		junctions[n1i] = append(junctions[n1i], junctions[n2i]...)
+		junctions = append(junctions[:n2i], junctions[n2i+1:]...)
+	}
+	if !n1p && !n2p {
+		junctions = append(junctions, []string{n1, n2})
+	}
+	return junctions
+}
+
+type NodePair struct {
+	nodes string
+	dist  int
 }
 
 func Part1() (time.Duration, time.Duration, int) {
-	p1 := 0
+	p1 := 1
 	//parse function
 	ParseStart := time.Now()
-	Input := fileparse.FileParse("day8/TestInput.txt")
+	Input := fileparse.FileParse("day8/Input.txt")
+	var InputInt [][]int
+	for _, i := range Input {
+		var row []int
+		for _, j := range strings.Split(i, ",") {
+			c, _ := strconv.Atoi(j)
+			row = append(row, c)
+		}
+		InputInt = append(InputInt, row)
+	}
 
 	ParseTime := time.Since(ParseStart)
+	startP1 := time.Now()
 	//puzzle
+	var discache []NodePair
 
-	var discache [][]string
-	lim := 10
+	var junctions [][]string
 	for i := 0; i < (len(Input) - 1); i++ {
 		for j := i + 1; j < len(Input); j++ {
-
-			dis := []string{Input[i], Input[j], strconv.Itoa(Distance(Input[i], Input[j]))}
-			discache = append(discache, dis)
+			xd := InputInt[i][0] - InputInt[j][0]
+			yd := InputInt[i][1] - InputInt[j][1]
+			zd := InputInt[i][2] - InputInt[j][2]
+			discache = append(discache, NodePair{Input[i] + "/" + Input[j], (xd * xd) + (yd * yd) + (zd * zd)})
 		}
 	}
 
-	startP1 := time.Now()
-
-	//fmt.Println(len(discache))
-	//fmt.Println(Distance("162,817,812", "431,825,988"))
+	sort.Slice(discache, func(i int, j int) bool {
+		return discache[i].dist < discache[j].dist
+	})
+	lim := 1000
 	for i := 0; i < lim; i++ {
-		min := 99999999999
-		//var cn []string
-		var idx int
-		for j, k := range discache {
-			d, _ := strconv.Atoi(k[2])
-			if d < min {
-				//cn = k
-				min = d
+		junctions = CheckJunc(junctions, discache[i].nodes)
+	}
+
+	for jCount := 0; jCount < 3; jCount++ {
+		idx := 0
+		min := 0
+		for j, i := range junctions {
+			jSize := len(i)
+			if jSize > min {
+				min = jSize
 				idx = j
-
 			}
-
 		}
-		discache = append(discache[:idx], discache[idx+1:]...)
-		//fmt.Println(cn)
-		//fmt.Println(len(discache))
+		junctions = append(junctions[:idx], junctions[idx+1:]...)
+		p1 = p1 * min
 	}
 
 	P1Time := time.Since(startP1)

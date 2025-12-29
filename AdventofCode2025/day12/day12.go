@@ -1,6 +1,7 @@
 package day12
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -30,10 +31,12 @@ func Part1() (time.Duration, time.Duration, int) {
 		reqSize := 0
 		presents := strings.Split(rowp[1], " ")
 		for j := range presents {
-
 			reqSize += StrMultiply(presentSize[j], presents[j])
 		}
 		if reqSize < GridSize {
+			fmt.Print(GridSize)
+			fmt.Print(" : ")
+			fmt.Println(GridSize - reqSize)
 			p1++
 		}
 	}
@@ -45,13 +48,10 @@ func Part1() (time.Duration, time.Duration, int) {
 func Part2() (time.Duration, time.Duration, int) {
 	//parse function
 	ParseStart := time.Now()
-	//Input := fileparse.FileParse("day11/Input.txt")
-
 	ParseTime := time.Since(ParseStart)
 	//puzzle
 	p2 := 0
 	startP2 := time.Now()
-
 	P2Time := time.Since(startP2)
 	return ParseTime, P2Time, p2
 }

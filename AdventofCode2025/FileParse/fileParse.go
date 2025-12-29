@@ -13,21 +13,16 @@ func FileParse(InputFile string) []string {
 		log.Fatal(err)
 	}
 	defer file.Close()
-
 	var lines []string
 	scanner := bufio.NewScanner(file)
-
 	for scanner.Scan() {
 
 		lines = append(lines, scanner.Text())
 	}
-
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-
 	return lines
-
 }
 
 func Grid(InputFile string, seperator string) [][]string {
