@@ -71,7 +71,6 @@ func Part1() (time.Duration, time.Duration, int) {
 	startP1 := time.Now()
 	//puzzle
 	var discache []NodePair
-
 	var junctions [][]string
 	for i := 0; i < (len(Input) - 1); i++ {
 		for j := i + 1; j < len(Input); j++ {
@@ -109,14 +108,50 @@ func Part1() (time.Duration, time.Duration, int) {
 }
 
 func Part2() (time.Duration, time.Duration, int) {
-	p2 := 0
+	p2 := 1
 	//parse function
 	ParseStart := time.Now()
-	//Input := fileparse.FileParse("day9/TestInput.txt")
+	Input := fileparse.FileParse("day8/Input.txt")
+	var InputInt [][]int
+	for _, i := range Input {
+		var row []int
+		for _, j := range strings.Split(i, ",") {
+			c, _ := strconv.Atoi(j)
+			row = append(row, c)
+		}
+		InputInt = append(InputInt, row)
+	}
 
 	ParseTime := time.Since(ParseStart)
-	//puzzle
 	startP2 := time.Now()
+	//puzzle
+	var discache []NodePair
+	var junctions [][]string
+
+	for i := 0; i < (len(Input) - 1); i++ {
+		for j := i + 1; j < len(Input); j++ {
+			xd := InputInt[i][0] - InputInt[j][0]
+			yd := InputInt[i][1] - InputInt[j][1]
+			zd := InputInt[i][2] - InputInt[j][2]
+			discache = append(discache, NodePair{Input[i] + "/" + Input[j], (xd * xd) + (yd * yd) + (zd * zd)})
+		}
+	}
+
+	sort.Slice(discache, func(i int, j int) bool {
+		return discache[i].dist < discache[j].dist
+	})
+
+	junctions = CheckJunc(junctions, discache[0].nodes)
+	i := 0
+	for len(junctions[0]) != 1000 {
+		i++
+		junctions = CheckJunc(junctions, discache[i].nodes)
+	}
+
+	FinalPair := strings.Split(discache[i].nodes, ",")
+	x1, _ := strconv.Atoi(FinalPair[0])
+	x2, _ := strconv.Atoi(strings.Split(FinalPair[2], "/")[1])
+	p2 = x1 * x2
 
 	P2Time := time.Since(startP2)
 	return ParseTime, P2Time, p2
