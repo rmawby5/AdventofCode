@@ -1,7 +1,6 @@
 package day9
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -16,127 +15,69 @@ func ab(num int) int {
 	return num
 }
 
-func Area(p1 []int, p2 []int) int {
-
-	return (ab(p1[0]-p2[0]) + 1) * (ab(p1[1]-p2[1]) + 1)
-
-}
-
-func Intersect(c1 []int, c2 []int, p1 []int, p2 []int) bool {
-	c3:= []int{c1[0],c2[1]}
-	c4:=[]int{c2[0], c1[1]}
-
-	//check intersection between c1, c3
-	if  {
-		fmt.Println("X P1")
-		return true
+func Intersect(p1 []int, p2 []int, c1 []int, c2 []int) bool {
+	//p=area definition, c = line for intersect check
+	//checks if line created by c1/c2 intersects with the borders of an area defined by diagonal points p1/p2
+	if c1[0] == c2[0] {
+		// verticle line
+		if (c1[0] < p1[0] && c1[0] > p2[0]) || (c1[0] > p1[0] && c1[0] < p2[0]) {
+			switch h := p1[1] < p2[1]; h {
+			case true:
+				//p2 higher
+				if (c1[1] > p2[1] && c2[1] > p2[1]) || (c1[1] < p1[1] && c2[1] < p1[1]) {
+					//both points are either lower or higher than the area, hence do not intersect
+					return false
+				}
+			case false:
+				//p1 higher
+				if (c1[1] > p1[1] && c2[1] > p1[1]) || (c1[1] < p2[1] && c2[1] < p2[1]) {
+					//both points are either lower or higher than the area, hence do not intersect
+					return false
+				}
+			}
+			//line intersects boundary at some point
+			return true
+		}
+	} else if c1[1] == c2[1] {
+		//horzontal line
+		if (c1[1] < p1[1] && c1[1] > p2[1]) || (c1[1] > p1[1] && c1[1] < p2[1]) {
+			switch h := p1[0] < p2[0]; h {
+			case true:
+				//p2 is higher
+				if (c1[0] > p2[0] && c2[0] > p2[0]) || (c1[0] < p1[0] && c2[0] < p1[0]) {
+					//both points are either lower or higher than the area, hence do not intersect
+					return false
+				}
+			case false:
+				//p1 is higher
+				if (c1[0] > p1[0] && c2[0] > p1[0]) || (c1[0] < p2[0] && c2[0] < p2[0]) {
+					//both points are either lower or higher than the area, hence do not intersect
+					return false
+				}
+			}
+			//line intersects boundary at some point
+			return true
+		}
 	}
-	//check intersection between c1, c4
-	if  {
-		fmt.Println("X P2")
-		return true
-	}
-	//check intersection between c2, c3
-	if  {
-		fmt.Println("Y P1")
-		return true
-	}
-	//check intersection between c2, c4
-	if  {
-		fmt.Println("Y p2")
-		return true
-	}
-
 	return false
-
 }
-
-	fmt.Println(Intersect([]int{7, 1}, []int{11, 1}, []int{9, 5}, []int{2, 5}))
 
 func IntersectValidation(p1 []int, p2 []int, pList [][]int) bool {
-	//var pv bool
-	//	for i := 0; i < (len(pList) - 1); i++ {
-	//		if Intersect(p1, p2, pList[i], pList[i+1]) {
-	//			//intersection is present, area is not valid
-	//			fmt.Println("false")
-	//			fmt.Println(i)
-	//			fmt.Print(pList[i])
-	//			fmt.Print(" : ")
-	//			fmt.Println(pList[i+1])
-	//
-	//			return false
-	//		}
-	//
-	//	}
+	//gets line segments from a list of points and returns true is no line segments intersect with the boundy of area defined by p1/p2
 	for i := 0; i < (len(pList) - 1); i++ {
-		for j := i + 1; j < len(pList); j++ {
-			if Intersect(p1, p2, pList[i], pList[i+1]) {
-				//intersection is present, area is not valid
-				fmt.Println("false")
-				fmt.Println(i)
-				fmt.Print(pList[i])
-				fmt.Print(" : ")
-				fmt.Println(pList[i+1])
-
-				return false
-			}
-		}
-	}
-
-	return true
-}
-
-func BoundaryCheckList(p1 []int, p2 []int, pList [][]int) bool {
-	//var pv bool
-	for _, i := range pList {
-		if !BoundaryCheck(p1, p2, i) {
+		if Intersect(p1, p2, pList[i], pList[i+1]) {
+			//there is a line intersection, area is not valid
 			return false
 		}
-
 	}
 	return true
-}
-
-func BoundaryCheck(p1 []int, p2 []int, p3 []int) bool {
-	//checks if p3 is within a rectangle formed with p2 and p1 as diagonal points
-	xdiff := p1[0] - p2[0]
-	ydiff := p1[1] - p2[1]
-
-	if xdiff <= 0 {
-		//p2 right
-		if (p3[0]-p2[0]) >= 0 || (p3[0]-p1[0] <= 0) {
-			return true
-
-		}
-	} else {
-		//p2 left
-		if (p3[0]-p2[0]) <= 0 || (p3[0]-p1[0] >= 0) {
-			return true
-		}
-	}
-
-	if ydiff <= 0 {
-		//p2 higher
-		if (p3[1]-p2[1]) >= 0 || (p3[1]-p1[1] <= 0) {
-			return true
-		}
-	} else {
-		//p2 lower
-		if (p3[1]-p2[1]) <= 0 || (p3[1]-p1[1] >= 0) {
-			return true
-		}
-	}
-	//fmt.Print(p3)
-	//fmt.Print(" : ")
-	//fmt.Println(pv)
-	return false
 }
 
 func Part1() (time.Duration, time.Duration, int) {
 	p1 := 0
 	//parse function
 	ParseStart := time.Now()
-	Input := fileparse.FileParse("day9/TestInput.txt")
+	Input := fileparse.FileParse("day9/Input.txt")
 	var InputInt [][]int
 	for _, i := range Input {
 		row := strings.Split(i, ",")
@@ -146,18 +87,15 @@ func Part1() (time.Duration, time.Duration, int) {
 	}
 	ParseTime := time.Since(ParseStart)
 	//puzzle
-
 	startP1 := time.Now()
-
 	for i := 0; i < len(InputInt)-1; i++ {
 		for j := i + 1; j < len(InputInt); j++ {
-			curArea := Area(InputInt[i], InputInt[j])
+			curArea := (ab(InputInt[i][0]-InputInt[j][0]) + 1) * (ab(InputInt[i][1]-InputInt[j][1]) + 1)
 			if curArea > p1 {
 				p1 = curArea
 			}
 		}
 	}
-
 	P1Time := time.Since(startP1)
 	return ParseTime, P1Time, p1
 }
@@ -166,7 +104,7 @@ func Part2() (time.Duration, time.Duration, int) {
 	p2 := 0
 	//parse function
 	ParseStart := time.Now()
-	Input := fileparse.FileParse("day9/TestInput.txt")
+	Input := fileparse.FileParse("day9/Input.txt")
 	var InputInt [][]int
 	for _, i := range Input {
 		row := strings.Split(i, ",")
@@ -177,29 +115,16 @@ func Part2() (time.Duration, time.Duration, int) {
 	ParseTime := time.Since(ParseStart)
 	//puzzle
 	startP2 := time.Now()
-
-	//	for i := 0; i < len(InputInt)-1; i++ {
-	//		for j := i + 1; j < len(InputInt); j++ {
-	//			curArea := Area(InputInt[i], InputInt[j])
-	//			if curArea > p2 {
-	//
-	//				//fmt.Print(InputInt[i])
-	//				//fmt.Print(" : ")
-	//				//fmt.Println(InputInt[j])
-	//				//fmt.Println(curArea)
-	//				//fmt.Println(IntersectValidation(InputInt[i], InputInt[j], InputInt))
-	//				if IntersectValidation(InputInt[i], InputInt[j], InputInt) {
-	//
-	//					p2 = curArea
-	//				}
-	//
-	//			}
-	//		}
-	//	}
-	//fmt.Println(IntersectValidation([]int{7, 1}, []int{11, 1}, InputInt))
-	//fmt.Println(BoundaryCheckList([]int{9, 5}, []int{2, 3}, InputInt))
-
-	fmt.Println(Intersect([]int{7, 1}, []int{11, 1}, []int{9, 5}, []int{2, 5}))
+	for i := 0; i < len(InputInt)-1; i++ {
+		for j := i + 1; j < len(InputInt); j++ {
+			curArea := (ab(InputInt[i][0]-InputInt[j][0]) + 1) * (ab(InputInt[i][1]-InputInt[j][1]) + 1)
+			if curArea > p2 {
+				if IntersectValidation(InputInt[i], InputInt[j], InputInt) {
+					p2 = curArea
+				}
+			}
+		}
+	}
 	P2Time := time.Since(startP2)
 	return ParseTime, P2Time, p2
 }
